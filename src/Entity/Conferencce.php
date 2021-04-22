@@ -35,13 +35,18 @@ class Conferencce
     private $isInternational;
 
     /**
-     * @ORM\OneToMany(targetEntity=comment::class, mappedBy="conferencce", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="conferencce", orphanRemoval=true)
      */
     private $comments;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->city.' '.$this->year;
     }
 
     public function getId(): ?int
