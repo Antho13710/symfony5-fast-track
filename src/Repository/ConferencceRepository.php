@@ -19,6 +19,11 @@ class ConferencceRepository extends ServiceEntityRepository
         parent::__construct($registry, Conferencce::class);
     }
 
+    public function findAll()
+    {
+        return $this->findBy([], ['year' => 'ASC', 'city' => 'ASC']);
+    }
+
     // /**
     //  * @return Conferencce[] Returns an array of Conferencce objects
     //  */

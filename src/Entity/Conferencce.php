@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ConferencceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ConferencceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ConferencceRepository::class)
+ * @UniqueEntity("slug")
  */
 class Conferencce
 {
@@ -39,6 +42,11 @@ class Conferencce
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -47,6 +55,13 @@ class Conferencce
     public function __toString(): string
     {
         return $this->city.' '.$this->year;
+    }
+
+    public function computeSlug(SluggerInterface $sluggerInterface)
+    {
+        if (!$this->slug || '-' === $this->slug) {
+            $this->slug = (string) $sluggerInterface->slug((string) $this)->lower();
+        }
     }
 
     public function getId(): ?int
@@ -116,6 +131,18 @@ class Conferencce
                 $comment->setConferencce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
