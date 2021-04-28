@@ -4,6 +4,7 @@
 
 {% block body %}
     <h2>{{ conference }} Conference</h2>
+    <div>There are {{ comments|length }} comments.</div>
 
     {% if comments|length > 0 %}
         {% for comment in comments %}
