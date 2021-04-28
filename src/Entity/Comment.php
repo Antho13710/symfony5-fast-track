@@ -56,9 +56,9 @@ class Comment
     private $photoFilename;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10, options={"default": "submitted})
      */
-    private $state;
+    private $state = 'submitted';
 
     public function getId(): ?int
     {
